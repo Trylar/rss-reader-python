@@ -89,13 +89,13 @@ class TestRunner(unittest.TestCase):
         self.assertFalse(arguments.json)
 
     @patch.object(feedparser, "parse")
-    def test_main(self, mock_parse):
+    def test_run(self, mock_parse):
         args = ["rss_reader.py", "https://stackoverflow.com/feeds/", "--limit", "2"]
         mock_parse.return_value = tests_data.feed
         output = tests_data.printed_output
         stream = StringIO()
         with redirect_stdout(stream):
-            rss_reader.main(args)
+            rss_reader.run(args)
             self.assertEqual(stream.getvalue(), output)
 
 

@@ -7,7 +7,7 @@ Usage
 
     rss_reader.py [-h] [-v] [--json] [--verbose] [--limit LIMIT] source
 
-Only required argument is url source string, others are optional:: 
+Only required argument is url source string, others are optional: 
 
     -h, --help     show this help message and exit
     -v, --version  show version and exit
@@ -17,7 +17,7 @@ Only required argument is url source string, others are optional::
 
 If ``limit`` is not provided, tool outputs all content.
 
-If ``json`` argument is provided, tool returns data as json object with following structure::
+If ``json`` argument is provided, tool returns data as json object with following structure:
 
     {
         "title": string,
@@ -40,3 +40,14 @@ If ``json`` argument is provided, tool returns data as json object with followin
             ...
         ]
     }
+
+To run tool as command line utility:
+
+* clone repository
+* open command line from project folder
+* run ```python setup.py sdist```
+* run ```python setup.py install```
+
+Now utility can be called from console like
+    
+    rss-reader [-h] [-v] [--json] [--verbose] [--limit LIMIT] source

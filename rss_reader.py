@@ -10,7 +10,7 @@ from dateutil.parser import parse as parse_date, ParserError
 import json
 import logging
 
-VERSION = "0.1"
+VERSION = "0.2"
 
 
 def format_title(title: str) -> Optional[str]:
@@ -101,7 +101,7 @@ def parse_args(args):
     return arg_parser.parse_args(args)
 
 
-def main(argv) -> None:
+def run(argv) -> None:
     """Main function. Parses arguments and prints result in desired form.
     Argument "argv" is added for testing"""
     arguments = parse_args(argv[1:])
@@ -135,5 +135,5 @@ def main(argv) -> None:
     logging.debug("Work is done")
 
 
-if __name__ == "__main__":
-    main(sys.argv)
+def main():
+    run(sys.argv)
