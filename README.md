@@ -14,6 +14,7 @@ Only required argument is url source string, others are optional:
     --json         show content in json format
     --verbose      show verbose status messages
     --limit LIMIT  news limit
+    --date DATE    date for cached news in format YYYYMMDD
 
 If ``limit`` is not provided, tool outputs all content.
 
@@ -41,6 +42,9 @@ If ``json`` argument is provided, tool returns data as json object with followin
         ]
     }
 
+If ```date``` argument is provided, news for this day are seeked in cache file. If there is no news, error is returned.
+All other arguments work with this ```date``` argument as expected.
+
 To run tool as command line utility:
 
 * clone repository
@@ -49,5 +53,5 @@ To run tool as command line utility:
 * run ```python setup.py install```
 
 Now utility can be called from console like
-    
+
     rss-reader [-h] [-v] [--json] [--verbose] [--limit LIMIT] source

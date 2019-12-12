@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="rss-reader",
-    version="0.2",
+    version="0.3",
     scripts=['rss_reader.py'],
     entry_points={"console_scripts": ["rss-reader=rss_reader:main"]},
     install_requires=["argparse", "feedparser", "html2text", "python-dateutil", "typing"],

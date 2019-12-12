@@ -1,16 +1,20 @@
 """Utility to print RSS in console in readable format"""
 # !/usr/bin/env python
-import sys
 import argparse
+import datetime
 import feedparser
 from feedparser.util import FeedParserDict
 import html2text
+import json
 from typing import List, Dict, Optional
 from dateutil.parser import parse as parse_date, ParserError
-import json
 import logging
+import os
+import pickle
+import sys
 
-VERSION = "0.2"
+VERSION = "0.3"
+CACHE_FILE = "cache"
 
 
 def format_title(title: str) -> Optional[str]:
@@ -98,7 +102,52 @@ def parse_args(args):
     arg_parser.add_argument("--json", action="store_true", help="show content in json format", default=False)
     arg_parser.add_argument("--verbose", action="store_true", help="show verbose status messages", default=False)
     arg_parser.add_argument("--limit", action="store", help="news limit", default=-1)
+    arg_parser.add_argument("--date", action="store", help="date for cached news in format YYYYMMDD")
     return arg_parser.parse_args(args)
+
+
+def parse_feeds(source: str) -> FeedParserDict:
+    """Parse url source"""
+    return feedparser.parse(source)
+
+
+def load_cache(cache_file):
+    """Load cache from file until EOF"""
+    cache = []
+    while True:
+        try:
+            cache.append(pickle.load(cache_file))
+        except EOFError:
+            break
+    return cache
+
+
+def same_day(news_date: str, arg_date: datetime):
+    """Check if news_date is the same day as arg_date"""
+    return parse_date(news_date).date() == arg_date.date()
+
+
+def get_news(feed_news: List, cached_news: List, date: datetime) -> List:
+    """Get news with corresponding date from cached_news, deleting duplicates"""
+    return [news for news in cached_news if same_day(news.published, date) and news not in feed_news]
+
+
+def get_feed_from_cache(source, date) -> Dict:
+    """Get feed for url source from cache"""
+    if os.path.exists(CACHE_FILE) and os.stat(CACHE_FILE).st_size:
+        with open(CACHE_FILE, "rb") as cache_file:
+            cache = load_cache(cache_file)
+            feed = {}
+            for cached_feed in cache:
+                if cached_feed.get("href") == source:
+                    if not feed:
+                        feed = {"feed": cached_feed.get("feed"), "entries": []}
+                    feed.get("entries").extend(get_news(feed.get("entries"), cached_feed.get("entries"), date))
+            if not feed or not feed.get("entries"):
+                raise error("empty cache")
+    else:
+        raise error("empty cache")
+    return feed
 
 
 def run(argv) -> None:
@@ -116,16 +165,26 @@ def run(argv) -> None:
     logging.debug("Arguments parsed")
 
     logging.debug("Parsing data...")
-    try:
-        feed = feedparser.parse(source)
-    except Exception as e:
-        raise error("unexpected error while parsing" + str(e))
+    if arguments.date:
+        try:
+            date = datetime.datetime.strptime(len(arguments.date) == 8 and arguments.date, '%Y%m%d')
+        except Exception:
+            raise error("date has incorrect format, should be YYYYMMDD")
+        feed = get_feed_from_cache(source, date)
     else:
-        if feed.get("bozo"):
-            raise error("argument --source: invalid rss source")
-        if feed.get("status") != 200:
-            raise error(format_summary(feed.get("feed", {}).get("summary")) or "invalid rss source")
+        try:
+            feed = parse_feeds(source)
+        except Exception as e:
+            raise error("unexpected error while parsing" + str(e))
+        else:
+            if feed.get("bozo"):
+                raise error("argument --source: invalid rss source")
+            if feed.get("status") != 200:
+                raise error(format_summary(feed.get("feed", {}).get("summary")) or "invalid rss source")
+        with open(CACHE_FILE, "ab") as cache_file:
+            pickle.dump(feed, cache_file)
     logging.debug("Data parsed")
+
     if json_arg:
         result = process_json(feed, limit)
         print(json.dumps(result, indent=4))
