@@ -21,7 +21,7 @@ import sys
 import urllib.request
 
 VERSION = "0.5"
-CACHE_FILE = "cache"
+CACHE_FILE = "rss-reader-cache"
 
 
 def format_title(title: str) -> Optional[str]:
