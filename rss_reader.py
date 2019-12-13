@@ -19,7 +19,7 @@ from PIL import Image
 import sys
 import urllib.request
 
-VERSION = "0.3"
+VERSION = "0.4"
 CACHE_FILE = "cache"
 
 
@@ -130,7 +130,7 @@ def create_title(title: str) -> str:
 
 def create_link(link: str) -> str:
     """Add link to news on external resource"""
-    return "<a href='" + link + "'>Link</a>"
+    return "<br><a href='" + link + "'>Link</a>"
 
 
 def process_output_to_epub(feed: FeedParserDict, limit: int) -> epub.EpubBook:
@@ -260,7 +260,7 @@ def run(argv) -> None:
         try:
             feed = parse_feeds(source)
         except Exception as e:
-            raise error("unexpected error while parsing" + str(e))
+            raise error("unexpected error while parsing, check rss source: " + str(e))
         else:
             if feed.get("bozo"):
                 raise error("argument --source: invalid rss source")
