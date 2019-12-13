@@ -7,6 +7,7 @@ Usage
 
     usage: rss_runner.py [-h] [-v] [--json] [--verbose] [--limit LIMIT]
                          [--date DATE] [--to-epub] [--output-path OUTPUT_PATH]
+                         [--colorize]
                          source
 
 Only required argument is url source string, others are optional: 
@@ -24,6 +25,7 @@ Only required argument is url source string, others are optional:
       --to-epub             save data in epub file
       --output-path OUTPUT_PATH
                             path to the new file for saving
+      --colorize            colorize output
 
 If ``json`` argument is provided, tool returns data as json object with following structure:
 
@@ -58,6 +60,8 @@ If ```to-epub```  argument is provided, news will be converted and saved in .epu
 ```output-path``` allows to specify path for file. If it is invalid or is not specified, file wiil be saved in current directory. If ```to-epub```
 argument is missing, ```output-path``` will be ignored. If ```json``` argument is present, ```to-epub``` will be ignored.
 
+Argument ```colorize```, if present, colorizes output in console in different random colors. Not working with ```json``` argument. 
+
 To run tool as command line utility:
 
 * clone repository
@@ -67,4 +71,7 @@ To run tool as command line utility:
 
 Now utility can be called from console like
 
-    rss-reader [-h] [-v] [--json] [--verbose] [--limit LIMIT] source
+    rss-reader [-h] [-v] [--json] [--verbose] [--limit LIMIT]
+               [--date DATE] [--to-epub] [--output-path OUTPUT_PATH]
+               [--colorize]
+               source

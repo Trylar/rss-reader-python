@@ -2,10 +2,11 @@ from setuptools import setup
 
 setup(
     name="rss-reader",
-    version="0.4",
+    version="0.5",
     scripts=['rss_reader.py'],
     entry_points={"console_scripts": ["rss-reader=rss_reader:main"]},
-    install_requires=["argparse", "bs4", "ebooklib", "feedparser", "html2text", "pillow", "python-dateutil", "typing"],
+    install_requires=["argparse", "bs4", "colorama", "ebooklib", "feedparser", "html2text", "pillow",
+                      "python-dateutil", "typing"],
     package_data={
         '': ['*.md', '*.rst'],
     },

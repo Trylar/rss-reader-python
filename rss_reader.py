@@ -2,6 +2,7 @@
 # !/usr/bin/env python
 import argparse
 from bs4 import BeautifulSoup
+import colorama
 import datetime
 from ebooklib import epub
 import feedparser
@@ -19,7 +20,7 @@ from PIL import Image
 import sys
 import urllib.request
 
-VERSION = "0.4"
+VERSION = "0.5"
 CACHE_FILE = "cache"
 
 
@@ -175,6 +176,7 @@ def parse_args(args):
     arg_parser.add_argument("--date", action="store", help="date for cached news in format YYYYMMDD")
     arg_parser.add_argument("--to-epub", action="store_true", help="save data in epub file", default=False)
     arg_parser.add_argument("--output-path", action="store", help="path to the new file for saving")
+    arg_parser.add_argument("--colorize", action="store_true", help="colorize output", default=False)
     return arg_parser.parse_args(args)
 
 
@@ -233,6 +235,12 @@ def get_default_path() -> str:
     return os.path.join(str(Path.home()), "news.epub")
 
 
+def random_color(data):
+    colors = [colorama.Fore.RED, colorama.Fore.GREEN, colorama.Fore.YELLOW, colorama.Fore.BLUE,
+              colorama.Fore.MAGENTA, colorama.Fore.CYAN, colorama.Fore.WHITE]
+    return colors[hash(data) % 7]
+
+
 def run(argv) -> None:
     """Main function. Parses arguments and prints result in desired form.
     Argument "argv" is added for testing"""
@@ -287,7 +295,12 @@ def run(argv) -> None:
                 print("Epub file", path, "was successfully created")
         else:
             result = process_formatted_output(feed, limit)
-            [print(chunk) for chunk in result if chunk]
+            if arguments.colorize:
+                colorama.init()
+                [print(random_color(chunk) + chunk) for chunk in result if chunk]
+                colorama.deinit()
+            else:
+                [print(chunk) for chunk in result if chunk]
     logging.debug("Work is done")
 
 
