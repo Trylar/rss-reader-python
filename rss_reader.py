@@ -20,7 +20,7 @@ from PIL import Image
 import sys
 import urllib.request
 
-VERSION = "0.5"
+VERSION = "0.52"
 CACHE_FILE = "rss-reader-cache"
 
 
@@ -172,7 +172,7 @@ def parse_args(args):
     arg_parser.add_argument("-v", "--version", action="version", help="show version and exit", version=VERSION)
     arg_parser.add_argument("--json", action="store_true", help="show content in json format", default=False)
     arg_parser.add_argument("--verbose", action="store_true", help="show verbose status messages", default=False)
-    arg_parser.add_argument("--limit", action="store", help="news limit", default=-1)
+    arg_parser.add_argument("--limit", action="store", help="news limit")
     arg_parser.add_argument("--date", action="store", help="date for cached news in format YYYYMMDD")
     arg_parser.add_argument("--to-epub", action="store_true", help="save data in epub file", default=False)
     arg_parser.add_argument("--output-path", action="store", help="path to the new file for saving")
@@ -249,10 +249,15 @@ def run(argv) -> None:
         logging.basicConfig(level=logging.DEBUG)
     logging.debug("Reading arguments...")
     source, json_arg = arguments.source, arguments.json
-    try:
-        limit = int(arguments.limit)
-    except Exception:
-        raise error("argument --limit: expected number")
+    if arguments.limit:
+        try:
+            limit = int(arguments.limit)
+            if limit < 0:
+                raise Exception
+        except Exception:
+            raise error("argument --limit: expected non-negative number")
+    else:
+        limit = -1
     if arguments.output_path and not arguments.to_epub:
         print("Argument --output-path will be ignored")
     logging.debug("Arguments parsed")

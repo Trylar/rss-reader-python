@@ -51,7 +51,7 @@ If ``json`` argument is provided, tool returns data as json object with followin
         ]
     }
 
-If ``limit`` is not provided, tool outputs all content.
+```limit``` should be non-negative number, if not provided, tool outputs all content.
 
 If ```date``` argument is provided, news for this day are seeked in cache file. If there is no news, error is returned.
 All other arguments work with this ```date``` argument as expected.
