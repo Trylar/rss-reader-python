@@ -66,7 +66,7 @@ To run tool as command line utility:
 
 * clone repository
 * open command line from project folder
-* run ```python setup.py sdist```
+* run ```python setup.py build```
 * run ```python setup.py install```
 
 Now utility can be called from console like
