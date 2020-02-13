@@ -39,9 +39,9 @@ def get_feed_from_cache(source, date) -> Dict:
                         feed = {"feed": cached_feed.get("feed"), "entries": []}
                     feed.get("entries").extend(get_news(feed.get("entries"), cached_feed.get("entries"), date))
             if not feed or not feed.get("entries"):
-                raise utils.error("empty cache")
+                raise utils.Error("empty cache")
     else:
-        raise utils.error("empty cache")
+        raise utils.Error("empty cache")
     return feed
 
 

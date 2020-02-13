@@ -19,7 +19,7 @@ def create_epub_file(arguments, feed, limit):
         epub_data = process_output_to_epub(feed, limit)
         epub.write_epub(path, epub_data, {})
     except Exception as e:
-        raise utils.error(str(e))
+        raise utils.Error(str(e))
     else:
         print("Epub file", path, "was successfully created")
 

@@ -1,13 +1,14 @@
+"""Handle command line arguments"""
 import argparse
 
-VERSION = "0.53"
+from version import __version__ as version
 
 
-def parse_args(args):
+def parse_args(args: list) -> argparse.Namespace:
     """Create argument parser, parse arguments and return them"""
-    arg_parser = create_arg_parser("Get rss source and show it's content")
+    arg_parser = create_arg_parser(desc="Get rss source and show it's content")
     arg_parser.add_argument("source", action="store", help="rss source")
-    arg_parser.add_argument("-v", "--version", action="version", help="show version and exit", version=VERSION)
+    arg_parser.add_argument("-v", "--version", action="version", help="show version and exit", version=version)
     arg_parser.add_argument("--json", action="store_true", help="show content in json format", default=False)
     arg_parser.add_argument("--verbose", action="store_true", help="show verbose status messages", default=False)
     arg_parser.add_argument("--limit", action="store", help="news limit")

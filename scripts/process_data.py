@@ -1,3 +1,4 @@
+"""Form data for printing"""
 from feedparser.util import FeedParserDict
 import logging
 from typing import Dict, List, Optional
