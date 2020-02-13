@@ -4,8 +4,8 @@ from unittest.mock import patch
 from contextlib import redirect_stdout
 from io import StringIO
 
-from scripts import process_data, argument_parser, format_output
 from rss_reader import rss_reader
+from scripts import process_data, argument_parser, format_output
 from tests import tests_data
 
 

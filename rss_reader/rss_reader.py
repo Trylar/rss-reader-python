@@ -1,11 +1,11 @@
+#!/usr/bin/env python
 """Utility to print RSS in console in readable format"""
-# !/usr/bin/env python
 import datetime
 import json
 import logging
 import sys
 
-from scripts import cache, process_data, color, argument_parser, format_output, feed_parser, epub, utils
+from scripts import *
 
 
 def run(argv) -> None:
@@ -22,7 +22,7 @@ def run(argv) -> None:
             if limit < 0:
                 raise Exception
         except Exception:
-            raise utils.error("argument --limit: expected non-negative number")
+            raise utils.Error("argument --limit: expected non-negative number")
     else:
         limit = -1
     if arguments.output_path and not arguments.to_epub:
@@ -34,18 +34,18 @@ def run(argv) -> None:
         try:
             date = datetime.datetime.strptime(len(arguments.date) == 8 and arguments.date, '%Y%m%d')
         except Exception:
-            raise utils.error("date has incorrect format, should be YYYYMMDD")
+            raise utils.Error("date has incorrect format, should be YYYYMMDD")
         feed = cache.get_feed_from_cache(source, date)
     else:
         try:
             feed = feed_parser.parse_feeds(source)
         except Exception as e:
-            raise utils.error("unexpected error while parsing, check rss source: " + str(e))
+            raise utils.Error("unexpected error while parsing, check rss source: " + str(e))
         else:
             if feed.get("bozo"):
-                raise utils.error("argument --source: invalid rss source")
+                raise utils.Error("argument --source: invalid rss source")
             if feed.get("status") != 200:
-                raise utils.error(
+                raise utils.Error(
                     format_output.format_summary(feed.get("feed", {}).get("summary")) or "invalid rss source")
         cache.write_to_cache(feed)
     logging.debug("Data parsed")

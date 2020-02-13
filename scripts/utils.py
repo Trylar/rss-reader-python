@@ -3,7 +3,8 @@ import logging
 import sys
 
 
-def error(message: str) -> None:
-    """Prints a usage message and exits"""
-    logging.error(message)
-    sys.exit(1)
+class Error(Exception):
+    def __init__(self, message: str):
+        """Prints a usage message and exits"""
+        logging.error(message)
+        sys.exit(1)
