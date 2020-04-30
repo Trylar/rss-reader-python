@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-from version import __version__ as version
+from scripts.version import __version__ as version
 
 setup(
     name="rss-reader",

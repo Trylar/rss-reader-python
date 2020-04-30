@@ -5,7 +5,7 @@ rss_reader is a tool to receive rss data and print it in console in readable for
 Usage
 -----
 
-    usage: rss_runner.py [-h] [-v] [--json] [--verbose] [--limit LIMIT]
+    usage: rss_reader.py [-h] [-v] [--json] [--verbose] [--limit LIMIT]
                          [--date DATE] [--to-epub] [--output-path OUTPUT_PATH]
                          [--colorize]
                          source

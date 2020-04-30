@@ -1,7 +1,7 @@
 """Handle command line arguments"""
 import argparse
 
-from version import __version__ as version
+from scripts.version import __version__ as version
 
 
 def parse_args(args: list) -> argparse.Namespace:

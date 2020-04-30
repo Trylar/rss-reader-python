@@ -8,14 +8,13 @@ import sys
 from scripts import *
 
 
-def run(argv) -> None:
+def run(argv):
     """Main function. Parses arguments and prints result in desired form.
     Argument "argv" is added for testing"""
     arguments = argument_parser.parse_args(argv[1:])
     if arguments.verbose:
         logging.basicConfig(level=logging.DEBUG)
     logging.debug("Reading arguments...")
-    source, json_arg = arguments.source, arguments.json
     if arguments.limit:
         try:
             limit = int(arguments.limit)
@@ -35,10 +34,10 @@ def run(argv) -> None:
             date = datetime.datetime.strptime(len(arguments.date) == 8 and arguments.date, '%Y%m%d')
         except Exception:
             raise utils.Error("date has incorrect format, should be YYYYMMDD")
-        feed = cache.get_feed_from_cache(source, date)
+        feed = cache.get_feed_from_cache(arguments.source, date)
     else:
         try:
-            feed = feed_parser.parse_feeds(source)
+            feed = feed_parser.parse_feeds(arguments.source)
         except Exception as e:
             raise utils.Error("unexpected error while parsing, check rss source: " + str(e))
         else:
@@ -50,7 +49,7 @@ def run(argv) -> None:
         cache.write_to_cache(feed)
     logging.debug("Data parsed")
 
-    if json_arg:
+    if arguments.json:
         if arguments.to_epub:
             print("Argument --to-epub will be ignored")
         result = process_data.process_json(feed, limit)
