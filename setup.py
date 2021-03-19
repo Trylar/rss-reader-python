@@ -8,7 +8,7 @@ setup(
     packages=find_packages(),
     entry_points={"console_scripts": ["rss-reader=rss_reader.rss_reader:main"]},
     install_requires=["argparse==1.4.0", "bs4==0.0.1", "colorama==0.4.3", "ebooklib==0.17.1", "feedparser==6.0.0b1",
-                      "html2text==2019.9.26", "pillow==6.2.1", "python-dateutil==2.8.1"],
+                      "html2text==2019.9.26", "pillow==8.1.1", "python-dateutil==2.8.1"],
     package_data={"": ["*.md", "*.rst"], },
 
     author="Olga Akhmetova",
